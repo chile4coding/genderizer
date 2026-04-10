@@ -1,0 +1,26 @@
+{
+  "name": "genderize-api",
+  "version": "1.0.0",
+  "description": "Name gender classification API using Genderize.io",
+  "main": "src/dist/server.js",
+  "scripts": {
+    "build": "tsc -p src/tsconfig.json",
+    "start": "node src/dist/server.js",
+    "dev": "ts-node src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.15.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
