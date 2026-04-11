@@ -13,6 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
       - name: Create target directory on server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -20,7 +31,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          debug: true
           script: |
             mkdir -p ${{ secrets.SERVER_PATH }}
 
@@ -31,10 +41,9 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "src/*,package.json,package-lock.json"
+          source: "src,dist,package.json,package-lock.json"
           target: ${{ secrets.SERVER_PATH }}
           overwrite: true
-          debug: true
 
       - name: Restart app on server
         uses: appleboy/ssh-action@v1.0.3
@@ -43,9 +52,8 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          debug: true
           script: |
             cd ${{ secrets.SERVER_PATH }}
             npm install --production
             pm2 delete my-app 2>/dev/null || true
-            pm2 start src/dist/server.js --name "my-app"
+            pm2 start dist/server.js --name "my-app"
