@@ -41,8 +41,9 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "src,dist,package.json,package-lock.json"
+          source: "src/dist,package.json,package-lock.json"
           target: ${{ secrets.SERVER_PATH }}
+          strip_components: 2
           overwrite: true
 
       - name: Restart app on server
@@ -56,4 +57,4 @@ jobs:
             cd ${{ secrets.SERVER_PATH }}
             npm install --production
             pm2 delete my-app 2>/dev/null || true
-            pm2 start dist/server.js --name "my-app"
+            pm2 start server.js --name "my-app"
